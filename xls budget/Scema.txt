@@ -1,0 +1,6 @@
+Expense Schema
+	user
+	date
+	amount
+	description
+	category
