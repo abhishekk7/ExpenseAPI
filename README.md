@@ -1,5 +1,5 @@
 # ExpenseAPI
-Expense Record Manager
+Expense Record Manager API
 
 
 # Running the API
