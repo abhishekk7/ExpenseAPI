@@ -18,6 +18,12 @@ router.get('/expenses', function (req, res, next) {
     });
 });
 
+// get one expense
+router.get('/expenses/:id', function (req, res, next) {
+	Expense.findById(req.params.id).then(function (expense) {
+		res.send(expense);
+	});
+});
 
 // add a new expense to the db
 router.post('/expenses', function (req, res, next) {
