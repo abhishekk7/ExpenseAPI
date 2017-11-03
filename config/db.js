@@ -1,5 +1,5 @@
 var db = {};
 
-db.address = 'mongodb://localhost/ExpenseDB';
+db.address = 'mongodb://localhost:27018/ExpenseDB';
 
 module.exports = db;
