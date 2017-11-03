@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Expense = require('../../models/Expense');
+const User = require('../../models/User');
 const pck = require('../../package.json');
 
+// get api details
 router.get('/', function (req, res, next) {
     res.send({
         name: pck.name,
@@ -12,6 +14,7 @@ router.get('/', function (req, res, next) {
     });
 });
 
+// get all expenses
 router.get('/expenses', function (req, res, next) {
     Expense.find({}).then(function (data) {
         res.send(data);
@@ -20,9 +23,9 @@ router.get('/expenses', function (req, res, next) {
 
 // get one expense
 router.get('/expenses/:id', function (req, res, next) {
-	Expense.findById(req.params.id).then(function (expense) {
-		res.send(expense);
-	});
+    Expense.findById(req.params.id).then(function (expense) {
+        res.send(expense);
+    });
 });
 
 // add a new expense to the db
@@ -41,7 +44,6 @@ router.put('/expenses/:id', function (req, res, next) {
     });
 });
 
-
 // delete a expense from the db
 router.delete('/expenses/:id', function (req, res, next) {
     Expense.findByIdAndRemove(req.params.id).then(function (expense) {
@@ -49,5 +51,25 @@ router.delete('/expenses/:id', function (req, res, next) {
     });
 });
 
+// get all users
+router.get('/users', function (req, res, next) {
+    User.find({}).then(function (data) {
+        res.send(data);
+    });
+});
+
+// get one user
+router.get('/users/:id', function (req, res, next) {
+    User.findById(req.params.id).then(function (data) {
+        res.send(data);
+    });
+});
+
+// get by email
+router.get('/login', function (req, res, next) {
+    User.findOne({ 'email': req.query.email }).then(function (data) {
+        res.send(data);
+    });
+});
 
 module.exports = router;
