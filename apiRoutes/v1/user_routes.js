@@ -16,4 +16,11 @@ router.get('/:id', function (req, res, next) {
     });
 });
 
+// add new user
+router.post('/', function (req, res, next) {
+    User.create(req.body).then(function (data) {
+        res.send(data);
+    }).catch(next);
+});
+
 module.exports = router;

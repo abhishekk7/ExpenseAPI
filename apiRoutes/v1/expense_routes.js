@@ -4,8 +4,12 @@ const Expense = require('../../models/Expense');
 
 // get all expenses
 router.get('/', function (req, res, next) {
-    Expense.find({}).then(function (data) {
-        res.send(data);
+    var query = {};
+    if (req.query.user) {
+        query = req.query;
+    }
+    Expense.find(query).then(function (expense) {
+        res.send(expense);
     });
 });
 
