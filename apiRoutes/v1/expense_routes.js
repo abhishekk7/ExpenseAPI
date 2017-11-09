@@ -13,6 +13,13 @@ router.get('/', function (req, res, next) {
     });
 });
 
+// group by category
+router.get('/group', function (req, res, next) {
+    Expense.aggregate({ '$group': { _id: '$category', total: { $sum: '$amount' }, count: {$sum: 1} } }).then(function (data) {
+        res.send(data);
+    }, next);
+});
+
 // get one expense
 router.get('/:id', function (req, res, next) {
     Expense.findById(req.params.id).then(function (expense) {
