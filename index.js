@@ -8,7 +8,7 @@ const routes = require('./apiRoutes/routes');
 
 // setup express app
 const app = express();
-const port = process.env.port || 9000;
+const port = process.env.PORT || 9000;
 
 
 // db connection
