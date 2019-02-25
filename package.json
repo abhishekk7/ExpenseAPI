@@ -1,6 +1,6 @@
 {
   "name": "ExpenseAPI",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Expense Record Manager",
   "main": "index.js",
   "scripts": {
@@ -16,6 +16,7 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.1",
     "mongoose": "^4.12.1",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "plaid": "^2.10.0"
   }
 }

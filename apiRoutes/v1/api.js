@@ -17,7 +17,8 @@ router.get('/', function (req, res, next) {
     });
 })
     .use('/expenses', require('./expense_routes'))
-    .use('/users', require('./user_routes'));
+    .use('/users', require('./user_routes'))
+    .use('/plaid', require('./plaid_routes'));
 
 // get user by email
 router.get('/login', function (req, res, next) {

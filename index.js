@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
-
 const dbConfig = require('./config/db');
 const routes = require('./apiRoutes/routes');
 
@@ -11,6 +10,8 @@ const env = process.env.NODE_ENV || 'development';
 // setup express app
 const app = express();
 const port = process.env.PORT || 9000;
+
+
 
 
 // db connection
