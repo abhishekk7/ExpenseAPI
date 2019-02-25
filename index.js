@@ -6,13 +6,15 @@ const morgan = require('morgan');
 const dbConfig = require('./config/db');
 const routes = require('./apiRoutes/routes');
 
+const env = process.env.NODE_ENV || 'development';
+
 // setup express app
 const app = express();
 const port = process.env.PORT || 9000;
 
 
 // db connection
-mongoose.connect(dbConfig.address);
+mongoose.connect(dbConfig[env].address);
 mongoose.Promise = global.Promise;
 
 // middleware
