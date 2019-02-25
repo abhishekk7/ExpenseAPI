@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 
 // get all users
 router.get('/', function (req, res, next) {
-    console.log(process.env);
     User.find({}).then(function (data) {
         res.send(data);
     });
