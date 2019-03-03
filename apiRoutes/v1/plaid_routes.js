@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const Token = require('../../models/token');
+const Token = require('../../models/Token');
 const plaid = require('plaid');
+const User = require('../../models/User');
+const Transaction = require('../../models/Transaction');
+const moment = require('moment');
 
 var PLAID_CLIENT_ID = '5c6c2cde09ec71001165f32f';
 var PLAID_SECRET = '583e979e33f582c2f01ef399ddfe6d';
@@ -28,16 +31,68 @@ router.post('/get_access_token', function (req, res, next) {
                 error: error,
             });
         }
-        Token.create(tokenResponse).then(function (data) {
+        let data = tokenResponse;
+        tokenResponse.user_id = req.body.user_id;
+        Token.update({ user_id: tokenResponse.user_id }, tokenResponse, { upsert: true }).then(function (data) {
             res.json(tokenResponse);
         }).catch(next);
     });
 })
 
 router.get('/identity', function (request, response, next) {
-    client.getIdentity("access-sandbox-bde544f2-d232-4e55-ba52-707ae7ab0099", function (error, identityResponse) {
-        response.json({ error: error, identity: identityResponse });
+    User.findOne({ email: request.body.email }).then((data) => {
+        return Token.findOne({ user_id: data._id })
+    }).then((data) => {
+        client.getIdentity(data.access_token, function (error, identityResponse) {
+            response.json({ error: error, identity: identityResponse });
+        });
+    }).catch((err) => {
+        res.json(err, 400);
     });
 });
+
+router.get('/accounts', function (request, response, next) {
+    User.findOne({ email: request.body.email }).then((data) => {
+        return Token.findOne({ user_id: data._id })
+    }).then((data) => {
+        client.getAccounts(data.access_token, function (error, accountsResponse) {
+            response.json({ error: error, accounts: accountsResponse.accounts });
+        });
+    }).catch((err) => {
+        res.json(err, 400);
+    });
+});
+
+router.get('/transactions', function (request, response, next) {
+    User.findOne({ email: request.body.email }).then((data) => {
+        return Token.findOne({ user_id: data._id })
+    }).then((data) => {
+        var startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
+        var endDate = moment().format('YYYY-MM-DD');
+        client.getTransactions(data.access_token, startDate, endDate, {
+            count: 250,
+            offset: 0,
+        }, function (error, transactionsResponse) {
+            if (error != null) {
+                console.log('plaid error')
+                return response.json({
+                    error: error
+                });
+            } else {
+                let transactions = transactionsResponse.transactions;
+                Transaction.create(transactions, (err, transactions) => {
+                    if (err)
+                        return response.json({
+                            error: err
+                        });
+                    response.json({ error: null, transactions });
+                });
+            }
+        });
+    }).catch((err) => {
+        response.json(err, 400);
+    });
+});
+
 
 module.exports = router;

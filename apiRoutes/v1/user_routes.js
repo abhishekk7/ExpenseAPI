@@ -19,8 +19,9 @@ router.get('/:id', function (req, res, next) {
 
 // add new user
 router.post('/', function (req, res, next) {
-    User.create(req.body).then(function (data) {
-        data.password = bcrypt.hashSync(data.password, 10);
+    let user = req.body;
+    user.password = bcrypt.hashSync(user.password, 10);
+    User.create(user).then(function (data) {
         res.send(data);
     }).catch(next);
 });

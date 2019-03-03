@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../../models/User');
 const pck = require('../../package.json');
+const bcrypt = require('bcrypt');
 
 // get api details
 router.get('/', function (req, res, next) {
@@ -22,8 +23,13 @@ router.get('/', function (req, res, next) {
 
 // get user by email
 router.get('/login', function (req, res, next) {
-    User.findOne({ 'email': req.query.email }).then(function (data) {
-        res.send(data);
+    let password = req.body.password;
+    console.log(password);
+    User.findOne({ 'email': req.body.email }).then(function (data) {
+        if(bcrypt.compareSync(password, data.password)) {
+            return res.send(data);
+        }
+        res.send('User Not Found', 401);
     });
 });
 

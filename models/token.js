@@ -13,6 +13,10 @@ const TokenSchema = new Schema({
 	},
 	status_code: {
 		type: 'Number'
+	},
+	user_id: {
+		type: "String",
+		unique: true
 	}
 });
 

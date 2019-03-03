@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:start": "node index.js",
+    "dev:start": "nodemon index.js",
     "start": "export NODE_ENV=production || SET \"NODE_ENV=production\" && node index.js"
   },
   "keywords": [],
@@ -15,6 +15,7 @@
     "bcrypt": "^3.0.4",
     "body-parser": "^1.18.2",
     "express": "^4.16.1",
+    "moment": "^2.24.0",
     "mongoose": "^4.12.1",
     "morgan": "^1.9.0",
     "plaid": "^2.10.0"

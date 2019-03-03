@@ -4,7 +4,9 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     email: {
         type: String,
-        required: [true, "Email is Required"]
+        required: [true, "Email is Required"],
+        unique: true,
+        dropDups: true
     },
     password: {
         type: String,
