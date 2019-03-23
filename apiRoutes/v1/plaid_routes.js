@@ -63,7 +63,7 @@ router.get('/accounts', function (request, response, next) {
     });
 });
 
-router.get('/transactions', function (request, response, next) {
+router.post('/transactions', function (request, response, next) {
     User.findOne({ email: request.body.email }).then((data) => {
         return Token.findOne({ user_id: data._id })
     }).then((data) => {
@@ -80,11 +80,7 @@ router.get('/transactions', function (request, response, next) {
                 });
             } else {
                 let transactions = transactionsResponse.transactions;
-                Transaction.create(transactions, (err, transactions) => {
-                    if (err)
-                        return response.json({
-                            error: err
-                        });
+                Transaction.create(transactions).finally(()=> {
                     response.json({ error: null, transactions });
                 });
             }
